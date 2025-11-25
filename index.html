@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InnovaCode | Software Architecture Consulting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           1. CSS VARIABLES & RESET
+           ========================================= */
+        :root {
+            --primary-dark: #0F172A; /* Deep Navy */
+            --secondary-dark: #1E293B; /* Slate */
+            --accent-green: #10B981; /* Success/Code Green */
+            --accent-blue: #3B82F6; /* Tech Blue */
+            --text-light: #F1F5F9;
+            --text-grey: #94A3B8;
+            --white: #FFFFFF;
+            --font-main: 'Inter', sans-serif;
+            --font-code: 'Fira Code', monospace;
+            --padding-section: 100px 20px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--primary-dark);
+            background-color: #F8FAFC;
+            line-height: 1.7;
+        }
+
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        h1 { font-weight: 800; }
+        
+        .code-font {
+            font-family: var(--font-code);
+        }
+
+        p {
+            margin-bottom: 20px;
+            color: #475569;
+        }
+
+        a {
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* =========================================
+           2. UTILITIES & COMPONENTS
+           ========================================= */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .section-header {
+            margin-bottom: 60px;
+            max-width: 700px;
+        }
+
+        .subtitle {
+            color: var(--accent-blue);
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 16px 32px;
+            background-color: var(--accent-blue);
+            color: var(--white);
+            font-weight: 600;
+            border-radius: 4px;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* =========================================
+           3. HEADER
+           ========================================= */
+        header {
+            background-color: var(--primary-dark);
+            color: var(--white);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-code);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .logo span {
+            color: var(--accent-green);
+        }
+
+        nav ul {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-grey);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            color: var(--accent-green);
+        }
+
+        /* =========================================
+           4. HERO SECTION
+           ========================================= */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.9)), url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            color: var(--white);
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 25px;
+        }
+
+        .hero p {
+            color: var(--text-grey);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            max-width: 600px;
+        }
+
+        /* =========================================
+           5. ABOUT US (The Kernel)
+           ========================================= */
+        .about {
+            padding: var(--padding-section);
+            background-color: var(--white);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-size: 2.5rem;
+            color: var(--primary-dark);
+        }
+
+        .about-img {
+            position: relative;
+        }
+
+        .about-img::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--accent-green);
+            z-index: -1;
+        }
+
+        /* =========================================
+           6. SERVICES (System Modules)
+           ========================================= */
+        .services {
+            padding: var(--padding-section);
+            background-color: #F1F5F9;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .service-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            transition: 0.3s;
+            border-top: 4px solid var(--primary-dark);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-top-color: var(--accent-blue);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--accent-blue);
+            font-family: var(--font-code);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+        }
+
+        /* =========================================
+           7. ADVANTAGES (The Code Edge)
+           ========================================= */
+        .advantages {
+            padding: var(--padding-section);
+            background-color: var(--primary-dark);
+            color: var(--white);
+        }
+
+        .advantages h2 {
+            color: var(--white);
+        }
+
+        .advantages p {
+            color: var(--text-grey);
+        }
+
+        .adv-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+        }
+
+        .adv-item {
+            padding-left: 20px;
+            border-left: 1px solid var(--accent-green);
+        }
+
+        .adv-item h3 {
+            color: var(--accent-green);
+            font-family: var(--font-code);
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        /* =========================================
+           8. PROCESS (The Algorithm)
+           ========================================= */
+        .process {
+            padding: var(--padding-section);
+            background-color: var(--white);
+        }
+
+        .process-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 60px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 280px;
+            background: #F8FAFC;
+            padding: 30px;
+            border-radius: 6px;
+            position: relative;
+        }
+
+        .step-num {
+            font-family: var(--font-code);
+            font-size: 3rem;
+            color: rgba(59, 130, 246, 0.1);
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-weight: 700;
+        }
+
+        .step h3 {
+            margin-top: 20px;
+            font-size: 1.3rem;
+        }
+
+        /* =========================================
+           9. CONTACT
+           ========================================= */
+        .contact {
+            padding: var(--padding-section);
+            background-color: #F1F5F9;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            background: var(--white);
+            padding: 60px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+
+        .contact-info h3 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+
+        .info-block {
+            margin-bottom: 25px;
+        }
+
+        .info-block h4 {
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--accent-blue);
+            margin-bottom: 5px;
+        }
+
+        .info-block p {
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        input, textarea {
+            padding: 15px;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            font-family: var(--font-main);
+            width: 100%;
+        }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+        }
+
+        textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        footer {
+            background-color: var(--primary-dark);
+            color: var(--text-grey);
+            text-align: center;
+            padding: 40px 0;
+            font-size: 0.85rem;
+        }
+
+        footer strong {
+            color: var(--white);
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 900px) {
+            .hero h1 { font-size: 2.5rem; }
+            .about-grid, .contact-container { grid-template-columns: 1fr; }
+            .nav-wrapper { flex-direction: column; gap: 20px; }
+            nav ul { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-wrapper">
+            <div class="logo">
+                INNOVA<span>CODE</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#about">The Firm</a></li>
+                    <li><a href="#services">Architecture</a></li>
+                    <li><a href="#advantages">Why Us</a></li>
+                    <li><a href="#process">Algorithm</a></li>
+                    <li><a href="#contact">Execute</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <span class="subtitle code-font">&lt;System.Design /&gt;</span>
+            <h1>Architecting Scalable <br> Digital Ecosystems</h1>
+            <p>InnovaCode Software Architecture Consulting delivers high-performance systems engineering solutions. Based in Porto Seguro, we transform complex business requirements into robust, future-proof software structures.</p>
+            <a href="#contact" class="btn">Initialize Project</a>
+        </div>
+    </section>
+
+    <section id="about" class="about">
+        <div class="container about-grid">
+            <div class="about-text">
+                <span class="subtitle">The Kernel</span>
+                <h2>Logic Meets Innovation</h2>
+                <p>Founded by Tachegnon Christian Kpanou, our firm stands at the intersection of rigorous engineering and creative problem solving. Operating as InnovaCode Software Architecture Consulting, we specialize in "Computer Systems Design," moving beyond simple coding to structure the very backbone of enterprise technology.</p>
+                <p>Our team in Bahia understands that true software architecture is about foresight. We design systems that are not only functional today but are capable of scaling with your business tomorrow. From high-level database schematics to microservices implementation, we ensure every line of code serves a strategic purpose.</p>
+                <p>We believe in transparency, technical excellence, and the power of well-architected software to drive business efficiency. Whether you are a startup needing a roadmap or an enterprise needing a refactor, we provide the blueprint.</p>
+            </div>
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1573164713988-8665fc963095?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Software Architect at Work">
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="services">
+        <div class="container">
+            <div class="section-header">
+                <span class="subtitle">System Capabilities</span>
+                <h2>Architectural Solutions</h2>
+            </div>
+            
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="icon">{ ... }</div>
+                    <h3>Enterprise System Design</h3>
+                    <p>We create the high-level structural design of your software systems. This includes defining hardware and software components, data flow, and interfaces to ensure seamless integration across your organization. We focus on stability and modularity.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="icon">&lt; / &gt;</div>
+                    <h3>Custom Software Engineering</h3>
+                    <p>Our team develops tailored software solutions to address specific operational bottlenecks. We utilize modern programming languages and frameworks to build applications that are secure, fast, and user-centric, adhering to strict coding standards.</p>
+                </div>
+
+                <div class="service-card">
+                    <div class="icon">API</div>
+                    <h3>Cloud Strategy & Integration</h3>
+                    <p>We facilitate the migration and optimization of your infrastructure to the cloud. By designing cloud-native architectures and implementing robust API strategies, we ensure your data is accessible, secure, and ready for global scale.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantages" class="advantages">
+        <div class="container">
+            <div class="section-header">
+                <span class="subtitle">The InnovaCode Edge</span>
+                <h2>Why Compile With Us?</h2>
+            </div>
+
+            <div class="adv-grid">
+                <div class="adv-item">
+                    <h3>Principal-Led Engineering</h3>
+                    <p>Under the guidance of Tachegnon Christian Kpanou, every project benefits from senior-level oversight. You are not just hiring a dev shop; you are partnering with an experienced software architect.</p>
+                </div>
+                <div class="adv-item">
+                    <h3>Scalability First Mindset</h3>
+                    <p>We don't build for the moment; we build for the future. Our architectures are designed to handle increased loads and feature expansions without requiring a total rewrite.</p>
+                </div>
+                <div class="adv-item">
+                    <h3>Global Standards, Local Roots</h3>
+                    <p>Based in Porto Seguro, Bahia, we bring a vibrant perspective to tech while adhering to rigorous international software development lifecycles (SDLC) and security protocols.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="process" class="process">
+        <div class="container">
+            <div class="section-header">
+                <span class="subtitle">The Algorithm</span>
+                <h2>Development Lifecycle</h2>
+            </div>
+
+            <div class="process-steps">
+                <div class="step">
+                    <div class="step-num">01</div>
+                    <h3>Analysis & Logic</h3>
+                    <p>We begin by auditing your current systems and defining clear requirements. We map out the logic and data structures before writing a single line of code.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">02</div>
+                    <h3>Architecture & Build</h3>
+                    <p>We create the blueprint and execute the development using agile methodologies. Regular sprints ensure transparency and allow for iterative feedback.</p>
+                </div>
+                <div class="step">
+                    <div class="step-num">03</div>
+                    <h3>Deployment & Optimization</h3>
+                    <p>We manage the launch of your system and provide ongoing monitoring. We optimize performance based on real-world usage data to ensure maximum efficiency.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <span class="subtitle">Input / Output</span>
+                <h2>Initialize Connection</h2>
+            </div>
+
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>Let's Debug Your Process</h3>
+                    <p>Ready to build a system that defines your industry? Contact our team in Porto Seguro.</p>
+                    <br>
+                    <div class="info-block">
+                        <h4>HEADQUARTERS</h4>
+                        <p>PORTO SEGURO, BAHIA<br>Brazil</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>ELECTRONIC MAIL</h4>
+                        <p>info@christiankpanousoftwarearchitecture.info</p>
+                    </div>
+                    <div class="info-block">
+                        <h4>KEY PRINCIPAL</h4>
+                        <p>Tachegnon Christian Kpanou</p>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <form action="#" method="POST">
+                        <div>
+                            <label class="code-font" style="font-size: 0.8rem; margin-bottom: 5px; display: block;">VAR NAME = "YOUR NAME"</label>
+                            <input type="text" placeholder="John Doe" required>
+                        </div>
+                        <div>
+                            <label class="code-font" style="font-size: 0.8rem; margin-bottom: 5px; display: block;">VAR EMAIL = "YOUR EMAIL"</label>
+                            <input type="email" placeholder="email@company.com" required>
+                        </div>
+                        <div>
+                            <label class="code-font" style="font-size: 0.8rem; margin-bottom: 5px; display: block;">FUNCTION MESSAGE()</label>
+                            <textarea placeholder="Describe your system requirements..."></textarea>
+                        </div>
+                        <button type="submit" class="btn">RUN REQUEST</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 <strong>TACHEGNON CHRISTIAN KPANOU SOFTWARE ARCHITECTURE LTDA</strong>.<br>
+            Doing Business As: INNOVACODE SOFTWARE ARCHITECTURE CONSULTING.<br>
+            All Rights Reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
